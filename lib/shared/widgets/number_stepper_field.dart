@@ -21,11 +21,11 @@ class NumberStepperField extends StatelessWidget {
     final theme = Theme.of(context);
 
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
       decoration: BoxDecoration(
-        color: theme.cardTheme.color,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: theme.colorScheme.outline),
+        color: theme.colorScheme.surface,
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(color: theme.colorScheme.outlineVariant),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -37,13 +37,13 @@ class NumberStepperField extends StatelessWidget {
               children: [
                 Text(
                   label,
-                  style: theme.textTheme.labelMedium?.copyWith(
-                    color: theme.colorScheme.onSurface.withValues(alpha: 0.7),
+                  style: theme.textTheme.bodySmall?.copyWith(
+                    color: theme.colorScheme.onSurfaceVariant,
                   ),
                 ),
                 Text(
                   value.toString(),
-                  style: theme.textTheme.titleLarge?.copyWith(
+                  style: theme.textTheme.titleMedium?.copyWith(
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -54,16 +54,14 @@ class NumberStepperField extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               IconButton(
-                icon: const Icon(Icons.remove_circle_outline_rounded),
+                icon: const Icon(Icons.remove),
                 onPressed: value > min ? () => onChanged(value - 1) : null,
                 visualDensity: VisualDensity.compact,
-                color: theme.colorScheme.primary,
               ),
               IconButton(
-                icon: const Icon(Icons.add_circle_outline_rounded),
+                icon: const Icon(Icons.add),
                 onPressed: value < max ? () => onChanged(value + 1) : null,
                 visualDensity: VisualDensity.compact,
-                color: theme.colorScheme.primary,
               ),
             ],
           ),

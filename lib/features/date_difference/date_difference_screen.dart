@@ -60,12 +60,12 @@ class _DateDifferenceScreenState extends State<DateDifferenceScreen> {
         title: const Text('Date Difference'),
         actions: [
           IconButton(
-            icon: const Icon(Icons.refresh_rounded),
+            icon: const Icon(Icons.refresh_outlined),
             tooltip: 'Reset dates',
             onPressed: _reset,
           ),
           IconButton(
-            icon: const Icon(Icons.share_rounded),
+            icon: const Icon(Icons.copy_outlined),
             tooltip: 'Copy summary',
             onPressed: () {
               AppUtils.copyToClipboard(
@@ -85,33 +85,29 @@ class _DateDifferenceScreenState extends State<DateDifferenceScreen> {
             selectedDate: _startDate,
             onDateChanged: (dt) => setState(() => _startDate = dt),
           ),
-          const SizedBox(height: 12),
-          Center(
-            child: OutlinedButton.icon(
+          const SizedBox(height: 8),
+          Align(
+            alignment: Alignment.centerRight,
+            child: TextButton.icon(
               onPressed: _swapDates,
-              icon: const Icon(Icons.swap_vert_rounded, size: 18),
+              icon: const Icon(Icons.swap_vert, size: 18),
               label: const Text('Swap Dates'),
-              style: OutlinedButton.styleFrom(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20),
-                ),
-              ),
             ),
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: 4),
           DateSelectorTile(
             label: 'End Date',
             selectedDate: _endDate,
             onDateChanged: (dt) => setState(() => _endDate = dt),
           ),
-          const SizedBox(height: 16),
-          // Inclusive switch
+          const SizedBox(height: 12),
+          // Clean Inclusive Switch Tile
           Container(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
             decoration: BoxDecoration(
-              color: theme.cardTheme.color,
-              borderRadius: BorderRadius.circular(12),
-              border: Border.all(color: theme.colorScheme.outline),
+              color: theme.colorScheme.surface,
+              borderRadius: BorderRadius.circular(8),
+              border: Border.all(color: theme.colorScheme.outlineVariant),
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -121,15 +117,15 @@ class _DateDifferenceScreenState extends State<DateDifferenceScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Include End Date',
-                        style: theme.textTheme.titleSmall?.copyWith(
+                        'Include End Date (+1 day)',
+                        style: theme.textTheme.bodyMedium?.copyWith(
                           fontWeight: FontWeight.w600,
                         ),
                       ),
                       Text(
-                        'Adds 1 day to calculate inclusive date span',
+                        'Counts the final day as a full day in the total',
                         style: theme.textTheme.bodySmall?.copyWith(
-                          color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
+                          color: theme.colorScheme.onSurfaceVariant,
                         ),
                       ),
                     ],
@@ -142,33 +138,30 @@ class _DateDifferenceScreenState extends State<DateDifferenceScreen> {
               ],
             ),
           ),
-          const SizedBox(height: 24),
+          const SizedBox(height: 16),
           // Results
           ResultCard(
             title: result.isNegative ? 'TOTAL DAYS (REVERSED)' : 'TOTAL DAYS',
             primaryValue: '${result.totalDays.abs()} Days',
             subtitle: result.isNegative
-                ? 'Start date is after End date'
+                ? 'Start date is after end date'
                 : (_includeEndDate ? 'Inclusive period' : 'Exclusive of end date'),
             copyPayload: '${result.totalDays.abs()} days',
-            icon: Icons.timelapse_rounded,
-            accentColor: result.isNegative ? Colors.orange : theme.colorScheme.primary,
+            icon: Icons.calendar_today_outlined,
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: 8),
           ResultCard(
             title: 'WEEKS & REMAINING DAYS',
             primaryValue: result.formattedWeeksDays,
             copyPayload: result.formattedWeeksDays,
-            icon: Icons.calendar_view_week_rounded,
-            accentColor: theme.colorScheme.secondary,
+            icon: Icons.view_week_outlined,
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: 8),
           ResultCard(
             title: 'YEARS, MONTHS & DAYS',
             primaryValue: result.formattedBreakdown,
             copyPayload: result.formattedBreakdown,
-            icon: Icons.pie_chart_outline_rounded,
-            accentColor: const Color(0xFF10B981),
+            icon: Icons.pie_chart_outline,
           ),
         ],
       ),

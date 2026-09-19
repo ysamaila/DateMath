@@ -62,12 +62,12 @@ class _AddSubtractDateScreenState extends State<AddSubtractDateScreen> {
         title: const Text('Add / Subtract Date'),
         actions: [
           IconButton(
-            icon: const Icon(Icons.refresh_rounded),
+            icon: const Icon(Icons.refresh_outlined),
             tooltip: 'Reset calculation',
             onPressed: _reset,
           ),
           IconButton(
-            icon: const Icon(Icons.share_rounded),
+            icon: const Icon(Icons.copy_outlined),
             tooltip: 'Copy result',
             onPressed: () {
               AppUtils.copyToClipboard(
@@ -87,20 +87,20 @@ class _AddSubtractDateScreenState extends State<AddSubtractDateScreen> {
             selectedDate: _baseDate,
             onDateChanged: (dt) => setState(() => _baseDate = dt),
           ),
-          const SizedBox(height: 16),
-          // Add / Subtract Segmented Button
+          const SizedBox(height: 12),
+          // Clean Add / Subtract Segmented Button
           Center(
             child: SegmentedButton<bool>(
               segments: const [
                 ButtonSegment<bool>(
                   value: false,
                   label: Text('Add Time (+)'),
-                  icon: Icon(Icons.add_circle_outline_rounded),
+                  icon: Icon(Icons.add),
                 ),
                 ButtonSegment<bool>(
                   value: true,
                   label: Text('Subtract Time (-)'),
-                  icon: Icon(Icons.remove_circle_outline_rounded),
+                  icon: Icon(Icons.remove),
                 ),
               ],
               selected: {_isSubtract},
@@ -109,15 +109,15 @@ class _AddSubtractDateScreenState extends State<AddSubtractDateScreen> {
               },
             ),
           ),
-          const SizedBox(height: 20),
+          const SizedBox(height: 16),
           Text(
             'Time Intervals to ${_isSubtract ? "Subtract" : "Add"}',
-            style: theme.textTheme.labelMedium?.copyWith(
-              color: theme.colorScheme.onSurface.withValues(alpha: 0.7),
+            style: theme.textTheme.bodyMedium?.copyWith(
               fontWeight: FontWeight.w600,
+              color: theme.colorScheme.onSurfaceVariant,
             ),
           ),
-          const SizedBox(height: 10),
+          const SizedBox(height: 8),
           NumberStepperField(
             label: 'Years',
             value: _years,
@@ -141,15 +141,14 @@ class _AddSubtractDateScreenState extends State<AddSubtractDateScreen> {
             value: _days,
             onChanged: (val) => setState(() => _days = val),
           ),
-          const SizedBox(height: 24),
+          const SizedBox(height: 16),
           // Prominent Result Card
           ResultCard(
             title: _isSubtract ? 'RESULTING DATE (SUBTRACTED)' : 'RESULTING DATE (ADDED)',
             primaryValue: resultFormatted,
             subtitle: 'ISO Format: $isoFormatted',
             copyPayload: resultFormatted,
-            icon: Icons.event_available_rounded,
-            accentColor: _isSubtract ? Colors.amber : theme.colorScheme.primary,
+            icon: Icons.event_available_outlined,
           ),
         ],
       ),

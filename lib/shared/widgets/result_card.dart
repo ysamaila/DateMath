@@ -24,71 +24,71 @@ class ResultCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final effectiveAccent = accentColor ?? theme.colorScheme.primary;
 
     return Card(
+      margin: EdgeInsets.zero,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(8),
+        side: BorderSide(color: theme.colorScheme.outlineVariant),
+      ),
       child: Padding(
-        padding: const EdgeInsets.all(18.0),
+        padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
               children: [
                 if (icon != null) ...[
-                  Container(
-                    padding: const EdgeInsets.all(6),
-                    decoration: BoxDecoration(
-                      color: effectiveAccent.withValues(alpha: 0.15),
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: Icon(icon, size: 18, color: effectiveAccent),
+                  Icon(
+                    icon,
+                    size: 18,
+                    color: accentColor ?? theme.colorScheme.primary,
                   ),
-                  const SizedBox(width: 10),
+                  const SizedBox(width: 8),
                 ],
                 Expanded(
                   child: Text(
                     title,
-                    style: theme.textTheme.labelLarge?.copyWith(
-                      color: theme.colorScheme.onSurface.withValues(alpha: 0.7),
+                    style: theme.textTheme.labelMedium?.copyWith(
+                      color: theme.colorScheme.onSurfaceVariant,
                       fontWeight: FontWeight.w600,
-                      letterSpacing: 0.5,
                     ),
                   ),
                 ),
                 if (copyPayload != null && copyPayload!.isNotEmpty)
                   IconButton(
-                    icon: const Icon(Icons.copy_rounded, size: 20),
-                    tooltip: 'Copy result',
+                    icon: const Icon(Icons.copy_outlined, size: 18),
+                    tooltip: 'Copy',
                     visualDensity: VisualDensity.compact,
                     onPressed: () {
                       AppUtils.copyToClipboard(
                         context,
                         copyPayload!,
-                        message: 'Copied "$primaryValue" to clipboard',
+                        message: 'Copied to clipboard',
                       );
                     },
                   ),
               ],
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: 8),
             Text(
               primaryValue,
-              style: theme.textTheme.headlineMedium?.copyWith(
+              style: theme.textTheme.headlineSmall?.copyWith(
                 fontWeight: FontWeight.bold,
                 color: theme.colorScheme.onSurface,
               ),
             ),
             if (subtitle != null && subtitle!.isNotEmpty) ...[
-              const SizedBox(height: 6),
+              const SizedBox(height: 4),
               Text(
                 subtitle!,
                 style: theme.textTheme.bodyMedium?.copyWith(
-                  color: theme.colorScheme.onSurface.withValues(alpha: 0.75),
+                  color: theme.colorScheme.onSurfaceVariant,
                 ),
               ),
             ],
             if (content != null) ...[
-              const SizedBox(height: 12),
+              const SizedBox(height: 10),
               content!,
             ],
           ],

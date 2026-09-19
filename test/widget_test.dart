@@ -19,20 +19,19 @@ void main() {
     await tester.pumpWidget(DateMathApp(themeController: themeController));
     await tester.pumpAndSettle();
 
-    // Verify DateMath branding and offline badge
+    // Verify DateMath branding
     expect(find.text('DateMath'), findsWidgets);
-    expect(find.textContaining('100% Offline'), findsOneWidget);
-    expect(find.text('TODAY OVERVIEW'), findsOneWidget);
-    expect(find.text('Calculation Tools'), findsOneWidget);
+    expect(find.text('TODAY'), findsOneWidget);
+    expect(find.text('Tools'), findsOneWidget);
 
-    // Verify tool cards on dashboard
+    // Verify tool list items on dashboard
     expect(find.text('Date Difference'), findsWidgets);
     expect(find.text('Add / Subtract Date'), findsWidgets);
     expect(find.text('Age Calculator'), findsWidgets);
     expect(find.text('Day Finder'), findsWidgets);
 
     // Tap on Date Difference bottom nav item
-    await tester.tap(find.byIcon(Icons.timelapse_outlined));
+    await tester.tap(find.byIcon(Icons.compare_arrows_outlined).last);
     await tester.pumpAndSettle();
 
     expect(find.text('Start Date'), findsOneWidget);
@@ -41,7 +40,7 @@ void main() {
     expect(find.text('WEEKS & REMAINING DAYS'), findsOneWidget);
 
     // Tap on Add/Subtract tab
-    await tester.tap(find.byIcon(Icons.more_time_rounded).last);
+    await tester.tap(find.byIcon(Icons.calendar_month_outlined).last);
     await tester.pumpAndSettle();
 
     expect(find.text('Add Time (+)'), findsOneWidget);
@@ -58,10 +57,10 @@ void main() {
     expect(find.text('NEXT BIRTHDAY'), findsOneWidget);
 
     // Tap on Day Finder tab
-    await tester.tap(find.byIcon(Icons.calendar_today_outlined));
+    await tester.tap(find.byIcon(Icons.today_outlined).last);
     await tester.pumpAndSettle();
 
-    expect(find.text('Select Date to Analyze'), findsOneWidget);
+    expect(find.text('Select Date to Check'), findsOneWidget);
     expect(find.text('DAY OF THE WEEK'), findsOneWidget);
     expect(find.text('DAY OF THE YEAR'), findsOneWidget);
   });

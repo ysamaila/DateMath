@@ -34,7 +34,6 @@ class _AgeCalculatorScreenState extends State<AgeCalculatorScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     final age = DateCalculationService.calculateAge(
       _birthDate,
       asOf: _asOfDate,
@@ -51,12 +50,12 @@ class _AgeCalculatorScreenState extends State<AgeCalculatorScreen> {
         title: const Text('Age Calculator'),
         actions: [
           IconButton(
-            icon: const Icon(Icons.refresh_rounded),
+            icon: const Icon(Icons.refresh_outlined),
             tooltip: 'Reset calculation',
             onPressed: _reset,
           ),
           IconButton(
-            icon: const Icon(Icons.share_rounded),
+            icon: const Icon(Icons.copy_outlined),
             tooltip: 'Copy age summary',
             onPressed: () {
               AppUtils.copyToClipboard(
@@ -83,39 +82,36 @@ class _AgeCalculatorScreenState extends State<AgeCalculatorScreen> {
             selectedDate: _asOfDate,
             onDateChanged: (dt) => setState(() => _asOfDate = dt),
           ),
-          const SizedBox(height: 24),
+          const SizedBox(height: 16),
           // Chronological Age Card
           ResultCard(
             title: 'CHRONOLOGICAL AGE',
             primaryValue: '${age.years} Years',
             subtitle: '${age.months} months, ${age.days} days',
             copyPayload: age.formattedAge,
-            icon: Icons.cake_rounded,
-            accentColor: theme.colorScheme.primary,
+            icon: Icons.cake_outlined,
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: 8),
           // Total Days & Weeks Lived Card
           ResultCard(
             title: 'LIFETIME DURATION',
             primaryValue: '${age.totalDaysLived} Days',
-            subtitle: '${age.totalWeeksLived} weeks lived so far',
+            subtitle: '${age.totalWeeksLived} weeks lived',
             copyPayload: '${age.totalDaysLived} days lived',
-            icon: Icons.hourglass_bottom_rounded,
-            accentColor: theme.colorScheme.secondary,
+            icon: Icons.hourglass_bottom_outlined,
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: 8),
           // Next Birthday Card
           ResultCard(
             title: 'NEXT BIRTHDAY',
             primaryValue: age.daysToNextBirthday == 0
-                ? 'Happy Birthday Today! 🎉'
+                ? 'Happy Birthday Today!'
                 : 'In ${age.daysToNextBirthday} Days',
             subtitle: '$nextBirthdayFormatted (${age.nextBirthdayWeekday})'
-                '${age.isBornOnLeapDay ? "\n(Leap-day birthday: Feb 29)" : ""}',
+                '${age.isBornOnLeapDay ? "\n(Leap-day birth: Feb 29)" : ""}',
             copyPayload:
                 'Next birthday: $nextBirthdayFormatted (${age.daysToNextBirthday} days remaining)',
-            icon: Icons.celebration_rounded,
-            accentColor: const Color(0xFFF59E0B),
+            icon: Icons.celebration_outlined,
           ),
         ],
       ),

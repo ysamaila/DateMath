@@ -2,27 +2,22 @@ import 'package:flutter/material.dart';
 
 class AppTheme {
   // Brand Colors
-  static const Color primaryColor = Color(0xFF4F46E5); // Indigo
-  static const Color secondaryColor = Color(0xFF06B6D4); // Cyan
-  static const Color accentTeal = Color(0xFF14B8A6);
-  static const Color accentAmber = Color(0xFFF59E0B);
-  static const Color accentPurple = Color(0xFF8B5CF6);
+  static const Color primaryColor = Color(0xFF1E3A8A); // Classic Deep Blue
+  static const Color primaryDark = Color(0xFF60A5FA);  // Crisp Light Blue
 
   // Dark Palette
-  static const Color darkBackground = Color(0xFF0D1117);
-  static const Color darkSurface = Color(0xFF161B22);
-  static const Color darkCard = Color(0xFF21262D);
-  static const Color darkBorder = Color(0xFF30363D);
-  static const Color darkTextPrimary = Color(0xFFF0F6FC);
-  static const Color darkTextSecondary = Color(0xFF8B949E);
+  static const Color darkBackground = Color(0xFF121212);
+  static const Color darkSurface = Color(0xFF1E1E1E);
+  static const Color darkBorder = Color(0xFF2E2E2E);
+  static const Color darkTextPrimary = Color(0xFFEDEDED);
+  static const Color darkTextSecondary = Color(0xFFA0A0A0);
 
   // Light Palette
-  static const Color lightBackground = Color(0xFFF8FAFC);
+  static const Color lightBackground = Color(0xFFF9FAFB);
   static const Color lightSurface = Color(0xFFFFFFFF);
-  static const Color lightCard = Color(0xFFF1F5F9);
-  static const Color lightBorder = Color(0xFFE2E8F0);
-  static const Color lightTextPrimary = Color(0xFF0F172A);
-  static const Color lightTextSecondary = Color(0xFF64748B);
+  static const Color lightBorder = Color(0xFFE5E7EB);
+  static const Color lightTextPrimary = Color(0xFF111827);
+  static const Color lightTextSecondary = Color(0xFF4B5563);
 
   static ThemeData get lightTheme {
     return ThemeData(
@@ -31,28 +26,31 @@ class AppTheme {
       scaffoldBackgroundColor: lightBackground,
       colorScheme: const ColorScheme.light(
         primary: primaryColor,
-        secondary: secondaryColor,
+        secondary: Color(0xFF2563EB),
         surface: lightSurface,
-        surfaceContainerHighest: lightCard,
+        surfaceContainerHighest: Color(0xFFF3F4F6),
         outline: lightBorder,
+        outlineVariant: Color(0xFFE5E7EB),
       ),
       appBarTheme: const AppBarTheme(
         backgroundColor: lightSurface,
         foregroundColor: lightTextPrimary,
         elevation: 0,
         centerTitle: false,
+        scrolledUnderElevation: 1,
       ),
       cardTheme: CardThemeData(
-        color: lightCard,
+        color: lightSurface,
         elevation: 0,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(8),
           side: const BorderSide(color: lightBorder, width: 1),
         ),
       ),
       navigationBarTheme: NavigationBarThemeData(
         backgroundColor: lightSurface,
-        indicatorColor: primaryColor.withValues(alpha: 0.15),
+        elevation: 1,
+        indicatorColor: primaryColor.withValues(alpha: 0.12),
         labelTextStyle: WidgetStateProperty.all(
           const TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
         ),
@@ -61,15 +59,15 @@ class AppTheme {
         filled: true,
         fillColor: lightSurface,
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(8),
           borderSide: const BorderSide(color: lightBorder),
         ),
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(8),
           borderSide: const BorderSide(color: lightBorder),
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(8),
           borderSide: const BorderSide(color: primaryColor, width: 2),
         ),
       ),
@@ -82,47 +80,50 @@ class AppTheme {
       brightness: Brightness.dark,
       scaffoldBackgroundColor: darkBackground,
       colorScheme: const ColorScheme.dark(
-        primary: Color(0xFF6366F1),
-        secondary: Color(0xFF22D3EE),
+        primary: primaryDark,
+        secondary: Color(0xFF93C5FD),
         surface: darkSurface,
-        surfaceContainerHighest: darkCard,
+        surfaceContainerHighest: Color(0xFF262626),
         outline: darkBorder,
+        outlineVariant: Color(0xFF333333),
       ),
       appBarTheme: const AppBarTheme(
         backgroundColor: darkSurface,
         foregroundColor: darkTextPrimary,
         elevation: 0,
         centerTitle: false,
+        scrolledUnderElevation: 1,
       ),
       cardTheme: CardThemeData(
-        color: darkCard,
+        color: darkSurface,
         elevation: 0,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(8),
           side: const BorderSide(color: darkBorder, width: 1),
         ),
       ),
       navigationBarTheme: NavigationBarThemeData(
         backgroundColor: darkSurface,
-        indicatorColor: const Color(0xFF6366F1).withValues(alpha: 0.25),
+        elevation: 1,
+        indicatorColor: primaryDark.withValues(alpha: 0.15),
         labelTextStyle: WidgetStateProperty.all(
           const TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
         ),
       ),
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
-        fillColor: darkCard,
+        fillColor: darkSurface,
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(8),
           borderSide: const BorderSide(color: darkBorder),
         ),
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(8),
           borderSide: const BorderSide(color: darkBorder),
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: const BorderSide(color: Color(0xFF6366F1), width: 2),
+          borderRadius: BorderRadius.circular(8),
+          borderSide: const BorderSide(color: primaryDark, width: 2),
         ),
       ),
     );

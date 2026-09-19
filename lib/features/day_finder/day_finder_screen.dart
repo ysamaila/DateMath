@@ -30,25 +30,24 @@ class _DayFinderScreenState extends State<DayFinderScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     final details = DateCalculationService.findDayDetails(_selectedDate);
 
     final summary =
         '${AppUtils.formatFull(_selectedDate)}: ${details.weekdayName}, Day ${details.dayOfYear} of the year, '
         'Week ${details.isoWeekNumber}, Quarter Q${details.quarter}, '
-        '${details.isLeapYear ? "Leap year" : "Non-leap year"}.';
+        '${details.isLeapYear ? "Leap year" : "Common year"}.';
 
     return Scaffold(
       appBar: AppBar(
         title: const Text('Day Finder'),
         actions: [
           IconButton(
-            icon: const Icon(Icons.refresh_rounded),
+            icon: const Icon(Icons.refresh_outlined),
             tooltip: 'Reset to today',
             onPressed: _reset,
           ),
           IconButton(
-            icon: const Icon(Icons.share_rounded),
+            icon: const Icon(Icons.copy_outlined),
             tooltip: 'Copy details',
             onPressed: () {
               AppUtils.copyToClipboard(
@@ -64,39 +63,36 @@ class _DayFinderScreenState extends State<DayFinderScreen> {
         padding: const EdgeInsets.all(16.0),
         children: [
           DateSelectorTile(
-            label: 'Select Date to Analyze',
+            label: 'Select Date to Check',
             selectedDate: _selectedDate,
             onDateChanged: (dt) => setState(() => _selectedDate = dt),
           ),
-          const SizedBox(height: 24),
+          const SizedBox(height: 16),
           // Day of the Week Card
           ResultCard(
             title: 'DAY OF THE WEEK',
             primaryValue: details.weekdayName,
             subtitle: AppUtils.formatFull(_selectedDate),
             copyPayload: details.weekdayName,
-            icon: Icons.today_rounded,
-            accentColor: theme.colorScheme.primary,
+            icon: Icons.today_outlined,
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: 8),
           // Day of Year & Days Left Card
           ResultCard(
             title: 'DAY OF THE YEAR',
-            primaryValue: 'Day ${details.dayOfYear}',
+            primaryValue: 'Day ${details.dayOfYear} of ${details.year}',
             subtitle: '${details.daysRemainingInYear} days remaining in ${details.year}',
             copyPayload: 'Day ${details.dayOfYear} of ${details.year}',
-            icon: Icons.calendar_month_rounded,
-            accentColor: theme.colorScheme.secondary,
+            icon: Icons.calendar_month_outlined,
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: 8),
           // Calendar Position Card
           ResultCard(
             title: 'CALENDAR POSITION',
-            primaryValue: 'Week ${details.isoWeekNumber} (ISO-8601)',
+            primaryValue: 'Week ${details.isoWeekNumber}',
             subtitle: 'Quarter Q${details.quarter} • ${details.isLeapYear ? "Leap Year (366 days)" : "Common Year (365 days)"}',
             copyPayload: 'Week ${details.isoWeekNumber}, Quarter Q${details.quarter}',
-            icon: Icons.grid_view_rounded,
-            accentColor: const Color(0xFF8B5CF6),
+            icon: Icons.grid_view_outlined,
           ),
         ],
       ),

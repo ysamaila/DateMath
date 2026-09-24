@@ -1,11 +1,12 @@
 # DateMath
 
-**DateMath** is a fast, reliable, 100% offline date and time calculation application for Android built with Flutter and Material 3.
+**DateMath** is a fast, reliable, 100% offline date and time calculation toolkit for Android built with Flutter and Material 3.
 
 ---
 
-## Features (Release 1 — CALCULATE)
+## Features
 
+### Release 1 — CALCULATE
 * **Today Overview**: Live local date, day of year counter (e.g. Day 261 of 365), days remaining in current year, current quarter, and ISO week number.
 * **Date Difference**:
   * Total day count between any two dates.
@@ -26,15 +27,37 @@
   * Day of the year and days remaining.
   * ISO-8601 week number.
   * Leap year verification badge.
+
+### Release 2 — CONVERT & TIME
+* **Time Math**:
+  * Accurate time difference calculation between two clock times.
+  * Automatic midnight-crossing and overnight span detection (`+1 Day`).
+  * Add or subtract hours, minutes, and seconds to any clock time with multi-day roll-over indicators.
+* **Duration Converter**:
+  * Universal live multi-unit converter spanning Milliseconds, Seconds, Minutes, Hours, Days, and Weeks.
+  * Human-readable composite duration breakdown (e.g., `90,000s = 1 day, 1 hour, 0 mins, 0 secs`).
+  * Quick presets for instant calculations (`1 hr`, `1 day`, `1 week`, `3,600s`, `86,400s`).
+* **12h / 24h Military Time**:
+  * Interactive conversion between 12-hour AM/PM and 24-hour military clock time.
+  * Spoken phonetic military guide (e.g., `"Twenty hundred forty-five hours"`).
+  * Real-time day completion progress bar and percentage.
+  * Military time cheat sheet and reference guide.
+* **World Time Offsets (100% Offline)**:
+  * Dual time zone comparison between local device time and global target destinations.
+  * Searchable offline database of ~60 major global cities grouped by continent.
+  * Direct manual UTC offset slider from `UTC-12:00` to `UTC+14:00` with 15/30-minute accuracy.
+  * Interactive hour scrubber to observe target time shift dynamically.
+
 * **Productivity & Convenience**:
-  * One-tap copy to clipboard with toast/snackbar confirmation.
+  * Dashboard category filter chips: `All (8)`, `Date Tools (4)`, `Time & Convert (4)`.
+  * One-tap copy to clipboard with floating confirmation.
   * Quick Reset action on every tool.
   * Light, Dark, and System theme support with local persistence.
-  * 100% offline — zero internet permissions, zero analytics, zero external network requests.
+  * **Strict 100% offline guarantee**: Zero internet permissions, zero analytics, zero external network requests.
 
 ---
 
-## Screenshots & Architecture
+## Architecture & Roadmap
 
 See [AGENTS.md](AGENTS.md) for full architecture notes, offline guarantee specifications, and the 6-release roadmap.
 

@@ -1,5 +1,6 @@
 /// Immutable offline dataset of major world cities and their standard UTC offsets.
 /// 100% offline, zero network dependencies.
+library;
 
 class WorldCity {
   final String name;

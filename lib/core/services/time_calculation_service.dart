@@ -1,5 +1,6 @@
 /// Pure Dart Time & Duration calculation engine for DateMath.
 /// 100% offline, zero Flutter UI dependencies.
+library;
 
 class ClockTime {
   final int hour;

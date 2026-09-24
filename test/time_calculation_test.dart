@@ -1,5 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:datemath/core/services/time_calculation_service.dart';
+import 'package:datemath/core/data/world_cities_data.dart';
 
 void main() {
   group('TimeCalculationService - Time Difference', () {
@@ -108,4 +109,51 @@ void main() {
       expect(result.spokenMilitary, 'Twenty hundred forty-five hours');
     });
   });
+
+  group('WorldCitiesData and World Time Offset Math', () {
+    test('Contains ~60 major global cities spanning all continents', () {
+      expect(WorldCitiesData.allCities.length, greaterThanOrEqualTo(50));
+      expect(WorldCitiesData.continents, containsAll(['Europe', 'Asia', 'North America', 'Africa', 'Oceania', 'South America']));
+    });
+
+    test('Searches cities case-insensitively by name, country, or code', () {
+      final results = WorldCitiesData.searchCities('tokyo');
+      expect(results.length, 1);
+      expect(results.first.name, 'Tokyo');
+      expect(results.first.utcOffsetMinutes, 9 * 60);
+
+      final ukResults = WorldCitiesData.searchCities('United Kingdom');
+      expect(ukResults.any((c) => c.name == 'London'), isTrue);
+    });
+
+    test('Calculates world offset difference correctly', () {
+      // London (UTC+0) to New Delhi (UTC+5:30)
+      final londonTime = ClockTime(hour: 12, minute: 0);
+      final result = TimeCalculationService.calculateOffsetDifference(
+        baseTime: londonTime,
+        baseOffsetMinutes: 0,
+        targetOffsetMinutes: 330, // +5h 30m
+      );
+
+      expect(result.targetTime.hour, 17);
+      expect(result.targetTime.minute, 30);
+      expect(result.offsetDeltaLabel, contains('+5 hrs 30 mins ahead'));
+      expect(result.relativeDay, 'Same day');
+    });
+
+    test('Calculates world offset date rollover into yesterday', () {
+      // Tokyo (UTC+9) 04:00 AM to New York (UTC-5) -> Tokyo is 14 hrs ahead
+      final tokyoTime = ClockTime(hour: 4, minute: 0);
+      final result = TimeCalculationService.calculateOffsetDifference(
+        baseTime: tokyoTime,
+        baseOffsetMinutes: 540,
+        targetOffsetMinutes: -300,
+      );
+
+      expect(result.targetTime.hour, 14); // 2:00 PM yesterday
+      expect(result.targetTime.minute, 0);
+      expect(result.relativeDay, 'Yesterday (-1d)');
+    });
+  });
 }
+

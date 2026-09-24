@@ -5,6 +5,10 @@ import '../add_subtract_date/add_subtract_date_screen.dart';
 import '../age_calculator/age_calculator_screen.dart';
 import '../date_difference/date_difference_screen.dart';
 import '../day_finder/day_finder_screen.dart';
+import '../duration_converter/duration_converter_screen.dart';
+import '../time_math/time_math_screen.dart';
+import '../twelve_twenty_four/twelve_twenty_four_screen.dart';
+import '../world_time_offsets/world_time_offsets_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   final ThemeController themeController;
@@ -82,7 +86,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 }
 
-class _DashboardView extends StatelessWidget {
+class _DashboardView extends StatefulWidget {
   final ThemeController themeController;
   final ValueChanged<int> onNavigateToTab;
 
@@ -92,9 +96,25 @@ class _DashboardView extends StatelessWidget {
   });
 
   @override
+  State<_DashboardView> createState() => _DashboardViewState();
+}
+
+class _DashboardViewState extends State<_DashboardView> {
+  int _categoryIndex = 0; // 0: All, 1: Date Tools, 2: Time & Convert
+
+  void _navigateToScreen(Widget screen) {
+    Navigator.of(context).push(
+      MaterialPageRoute(builder: (_) => screen),
+    );
+  }
+
+  @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final today = DateCalculationService.getTodayOverview();
+
+    final showDateTools = _categoryIndex == 0 || _categoryIndex == 1;
+    final showTimeTools = _categoryIndex == 0 || _categoryIndex == 2;
 
     return Scaffold(
       appBar: AppBar(
@@ -102,14 +122,14 @@ class _DashboardView extends StatelessWidget {
         actions: [
           IconButton(
             icon: Icon(
-              themeController.themeMode == ThemeMode.dark
+              widget.themeController.themeMode == ThemeMode.dark
                   ? Icons.dark_mode_outlined
-                  : (themeController.themeMode == ThemeMode.light
+                  : (widget.themeController.themeMode == ThemeMode.light
                       ? Icons.light_mode_outlined
                       : Icons.brightness_auto_outlined),
             ),
             tooltip: 'Toggle Theme',
-            onPressed: themeController.toggleTheme,
+            onPressed: widget.themeController.toggleTheme,
           ),
         ],
       ),
@@ -173,45 +193,113 @@ class _DashboardView extends StatelessWidget {
           ),
           const SizedBox(height: 20),
 
-          Text(
-            'Tools',
-            style: theme.textTheme.titleMedium?.copyWith(
-              fontWeight: FontWeight.bold,
+          // Tools Section Header + Category Chips
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'Tools',
+                style: theme.textTheme.titleMedium?.copyWith(
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 8),
+
+          // Filter Chips Row
+          SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              children: [
+                FilterChip(
+                  label: const Text('All (8)'),
+                  selected: _categoryIndex == 0,
+                  onSelected: (_) => setState(() => _categoryIndex = 0),
+                ),
+                const SizedBox(width: 8),
+                FilterChip(
+                  label: const Text('Date Tools (4)'),
+                  selected: _categoryIndex == 1,
+                  onSelected: (_) => setState(() => _categoryIndex = 1),
+                ),
+                const SizedBox(width: 8),
+                FilterChip(
+                  label: const Text('Time & Convert (4)'),
+                  selected: _categoryIndex == 2,
+                  onSelected: (_) => setState(() => _categoryIndex = 2),
+                ),
+              ],
             ),
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: 12),
 
-          // Clean list of tool items
-          _ToolTile(
-            title: 'Date Difference',
-            subtitle: 'Count days, weeks, and months between two dates',
-            icon: Icons.compare_arrows_outlined,
-            onTap: () => onNavigateToTab(1),
-          ),
-          const SizedBox(height: 8),
+          // Date Tools
+          if (showDateTools) ...[
+            _ToolTile(
+              title: 'Date Difference',
+              subtitle: 'Count days, weeks, and months between two dates',
+              icon: Icons.compare_arrows_outlined,
+              onTap: () => widget.onNavigateToTab(1),
+            ),
+            const SizedBox(height: 8),
+            _ToolTile(
+              title: 'Add / Subtract Date',
+              subtitle: 'Add or subtract years, months, weeks, or days from any date',
+              icon: Icons.calendar_month_outlined,
+              onTap: () => widget.onNavigateToTab(2),
+            ),
+            const SizedBox(height: 8),
+            _ToolTile(
+              title: 'Age Calculator',
+              subtitle: 'Calculate exact age and countdown to next birthday',
+              icon: Icons.cake_outlined,
+              onTap: () => widget.onNavigateToTab(3),
+            ),
+            const SizedBox(height: 8),
+            _ToolTile(
+              title: 'Day Finder',
+              subtitle: 'Find the weekday, day of year, and ISO week for any date',
+              icon: Icons.today_outlined,
+              onTap: () => widget.onNavigateToTab(4),
+            ),
+            if (showTimeTools) const SizedBox(height: 8),
+          ],
 
-          _ToolTile(
-            title: 'Add / Subtract Date',
-            subtitle: 'Add or subtract years, months, weeks, or days from any date',
-            icon: Icons.calendar_month_outlined,
-            onTap: () => onNavigateToTab(2),
-          ),
-          const SizedBox(height: 8),
-
-          _ToolTile(
-            title: 'Age Calculator',
-            subtitle: 'Calculate exact age and countdown to next birthday',
-            icon: Icons.cake_outlined,
-            onTap: () => onNavigateToTab(3),
-          ),
-          const SizedBox(height: 8),
-
-          _ToolTile(
-            title: 'Day Finder',
-            subtitle: 'Find the weekday, day of year, and ISO week for any date',
-            icon: Icons.today_outlined,
-            onTap: () => onNavigateToTab(4),
-          ),
+          // Time & Conversion Tools (Release 2)
+          if (showTimeTools) ...[
+            _ToolTile(
+              title: 'Time Math',
+              subtitle: 'Calculate time difference or add/subtract hours and minutes',
+              icon: Icons.access_time_filled_rounded,
+              iconColor: Colors.amber.shade700,
+              onTap: () => _navigateToScreen(const TimeMathScreen()),
+            ),
+            const SizedBox(height: 8),
+            _ToolTile(
+              title: 'Duration Converter',
+              subtitle: 'Convert across seconds, minutes, hours, days, and weeks',
+              icon: Icons.swap_horiz_rounded,
+              iconColor: Colors.cyan.shade700,
+              onTap: () => _navigateToScreen(const DurationConverterScreen()),
+            ),
+            const SizedBox(height: 8),
+            _ToolTile(
+              title: '12h / 24h Military Time',
+              subtitle: 'Convert standard 12-hour AM/PM to 24-hour military notation',
+              icon: Icons.timelapse_rounded,
+              iconColor: Colors.deepPurple.shade600,
+              onTap: () => _navigateToScreen(const TwelveTwentyFourScreen()),
+            ),
+            const SizedBox(height: 8),
+            _ToolTile(
+              title: 'World Time Offsets',
+              subtitle: 'Compare time zones and UTC offsets 100% offline',
+              icon: Icons.public_rounded,
+              iconColor: Colors.teal.shade700,
+              onTap: () => _navigateToScreen(const WorldTimeOffsetsScreen()),
+            ),
+          ],
         ],
       ),
     );
@@ -255,12 +343,14 @@ class _ToolTile extends StatelessWidget {
   final String title;
   final String subtitle;
   final IconData icon;
+  final Color? iconColor;
   final VoidCallback onTap;
 
   const _ToolTile({
     required this.title,
     required this.subtitle,
     required this.icon,
+    this.iconColor,
     required this.onTap,
   });
 
@@ -280,7 +370,7 @@ class _ToolTile extends StatelessWidget {
         ),
         leading: Icon(
           icon,
-          color: theme.colorScheme.primary,
+          color: iconColor ?? theme.colorScheme.primary,
           size: 24,
         ),
         title: Text(

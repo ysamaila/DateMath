@@ -48,8 +48,34 @@
   * Direct manual UTC offset slider from `UTC-12:00` to `UTC+14:00` with 15/30-minute accuracy.
   * Interactive hour scrubber to observe target time shift dynamically.
 
+### Release 2.0.0 — WORK, HISTORY & RECURRENCE (Unified Major Release)
+* **Business Days Calculator**:
+  * Count exact working days between two dates or add/subtract business days.
+  * Interactive custom weekend day selection (`Mon` through `Sun`).
+  * Offline regional holiday presets (United States, United Kingdom, Canada, Nigeria, International).
+  * Custom holiday management dialog with local persistence.
+  * Full metric breakdown: working days, weekend days, holidays excluded, and % working time.
+* **Milestone Countdown**:
+  * Track project deadlines, events, weddings, and milestones with customizable titles.
+  * Animated visual progress bar showing percentage of timeline completed.
+  * Dynamic hero countdown cards (days remaining, overdue indicator, reached status).
+  * Real-time working days remaining counter excluding weekends.
+  * Quick target presets: Next Month End, End of Quarter, End of Year, +100 Days.
+* **Recurrence Planner**:
+  * Comprehensive repeating schedule generator for events, meetings, and intervals.
+  * Supports Daily, Weekly (multi-weekday selection), Monthly (by day of month or relative Nth weekday e.g., "2nd Tuesday"), and Yearly patterns.
+  * Occurrence timeline preview with ISO week numbers and relative day counters.
+  * One-tap export and formatted schedule copying.
+* **Local Calculation History & Starred Favorites**:
+  * Automatic local recording of calculations across all tools (capped at 100 entries for zero bloat).
+  * Star favorite calculations for instant recall.
+  * Category-based history filtering (`Date Tools`, `Time & Convert`, `Work & Planning`).
+  * Single entry deletion and full history clear with confirmation.
+  * Export complete history log as formatted plain text.
+
 * **Productivity & Convenience**:
-  * Dashboard category filter chips: `All (8)`, `Date Tools (4)`, `Time & Convert (4)`.
+  * Dashboard category filter chips: `All (11)`, `Date Tools (4)`, `Time & Convert (4)`, `Work & Planning (3)`.
+  * Top AppBar quick-access button for Calculation History & Favorites.
   * One-tap copy to clipboard with floating confirmation.
   * Quick Reset action on every tool.
   * Light, Dark, and System theme support with local persistence.
@@ -59,7 +85,7 @@
 
 ## Architecture & Roadmap
 
-See [AGENTS.md](AGENTS.md) for full architecture notes, offline guarantee specifications, and the 6-release roadmap.
+See [AGENTS.md](AGENTS.md) for full architecture notes, offline guarantee specifications, and the product roadmap.
 
 ---
 

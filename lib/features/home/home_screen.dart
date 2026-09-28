@@ -1,21 +1,28 @@
 import 'package:flutter/material.dart';
+import '../../app/controllers/history_controller.dart';
 import '../../app/controllers/theme_controller.dart';
 import '../../core/services/date_calculation_service.dart';
 import '../add_subtract_date/add_subtract_date_screen.dart';
 import '../age_calculator/age_calculator_screen.dart';
+import '../business_days/business_days_screen.dart';
 import '../date_difference/date_difference_screen.dart';
 import '../day_finder/day_finder_screen.dart';
 import '../duration_converter/duration_converter_screen.dart';
+import '../history_presets/history_presets_screen.dart';
+import '../milestone_countdown/milestone_countdown_screen.dart';
+import '../recurrence_planner/recurrence_planner_screen.dart';
 import '../time_math/time_math_screen.dart';
 import '../twelve_twenty_four/twelve_twenty_four_screen.dart';
 import '../world_time_offsets/world_time_offsets_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   final ThemeController themeController;
+  final HistoryController? historyController;
 
   const HomeScreen({
     super.key,
     required this.themeController,
+    this.historyController,
   });
 
   @override
@@ -30,6 +37,7 @@ class _HomeScreenState extends State<HomeScreen> {
     final screens = [
       _DashboardView(
         themeController: widget.themeController,
+        historyController: widget.historyController,
         onNavigateToTab: (index) {
           setState(() {
             _selectedNavIndex = index;
@@ -88,10 +96,12 @@ class _HomeScreenState extends State<HomeScreen> {
 
 class _DashboardView extends StatefulWidget {
   final ThemeController themeController;
+  final HistoryController? historyController;
   final ValueChanged<int> onNavigateToTab;
 
   const _DashboardView({
     required this.themeController,
+    this.historyController,
     required this.onNavigateToTab,
   });
 
@@ -100,7 +110,7 @@ class _DashboardView extends StatefulWidget {
 }
 
 class _DashboardViewState extends State<_DashboardView> {
-  int _categoryIndex = 0; // 0: All, 1: Date Tools, 2: Time & Convert
+  int _categoryIndex = 0; // 0: All, 1: Date Tools, 2: Time & Convert, 3: Work & Planning
 
   void _navigateToScreen(Widget screen) {
     Navigator.of(context).push(
@@ -115,11 +125,22 @@ class _DashboardViewState extends State<_DashboardView> {
 
     final showDateTools = _categoryIndex == 0 || _categoryIndex == 1;
     final showTimeTools = _categoryIndex == 0 || _categoryIndex == 2;
+    final showWorkTools = _categoryIndex == 0 || _categoryIndex == 3;
 
     return Scaffold(
       appBar: AppBar(
         title: const Text('DateMath'),
         actions: [
+          if (widget.historyController != null)
+            IconButton(
+              icon: const Icon(Icons.history_rounded),
+              tooltip: 'Calculation History',
+              onPressed: () => _navigateToScreen(
+                HistoryPresetsScreen(
+                  historyController: widget.historyController!,
+                ),
+              ),
+            ),
           IconButton(
             icon: Icon(
               widget.themeController.themeMode == ThemeMode.dark
@@ -159,7 +180,7 @@ class _DashboardViewState extends State<_DashboardView> {
                   const SizedBox(height: 6),
                   Text(
                     today.formattedDate,
-                    style: theme.textTheme.titleLarge?.copyWith(
+                    style: theme.textTheme.titleMedium?.copyWith(
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -175,15 +196,15 @@ class _DashboardViewState extends State<_DashboardView> {
                       ),
                       _StatColumn(
                         label: 'Days Left',
-                        value: '${today.daysRemainingInYear}',
-                      ),
-                      _StatColumn(
-                        label: 'ISO Week',
-                        value: 'Week ${today.isoWeekNumber}',
+                        value: '${today.daysRemainingInYear} days',
                       ),
                       _StatColumn(
                         label: 'Quarter',
                         value: 'Q${today.quarter}',
+                      ),
+                      _StatColumn(
+                        label: 'ISO Week',
+                        value: 'Wk ${today.isoWeekNumber}',
                       ),
                     ],
                   ),
@@ -213,7 +234,7 @@ class _DashboardViewState extends State<_DashboardView> {
             child: Row(
               children: [
                 FilterChip(
-                  label: const Text('All (8)'),
+                  label: const Text('All (11)'),
                   selected: _categoryIndex == 0,
                   onSelected: (_) => setState(() => _categoryIndex = 0),
                 ),
@@ -229,12 +250,18 @@ class _DashboardViewState extends State<_DashboardView> {
                   selected: _categoryIndex == 2,
                   onSelected: (_) => setState(() => _categoryIndex = 2),
                 ),
+                const SizedBox(width: 8),
+                FilterChip(
+                  label: const Text('Work & Planning (3)'),
+                  selected: _categoryIndex == 3,
+                  onSelected: (_) => setState(() => _categoryIndex = 3),
+                ),
               ],
             ),
           ),
           const SizedBox(height: 12),
 
-          // Date Tools
+          // Date Tools (Release 1)
           if (showDateTools) ...[
             _ToolTile(
               title: 'Date Difference',
@@ -263,7 +290,7 @@ class _DashboardViewState extends State<_DashboardView> {
               icon: Icons.today_outlined,
               onTap: () => widget.onNavigateToTab(4),
             ),
-            if (showTimeTools) const SizedBox(height: 8),
+            if (showTimeTools || showWorkTools) const SizedBox(height: 8),
           ],
 
           // Time & Conversion Tools (Release 2)
@@ -298,6 +325,44 @@ class _DashboardViewState extends State<_DashboardView> {
               icon: Icons.public_rounded,
               iconColor: Colors.teal.shade700,
               onTap: () => _navigateToScreen(const WorldTimeOffsetsScreen()),
+            ),
+            if (showWorkTools) const SizedBox(height: 8),
+          ],
+
+          // Work, History & Planning Tools (Release 3, 4, 5)
+          if (showWorkTools) ...[
+            _ToolTile(
+              title: 'Business Days',
+              subtitle: 'Calculate working days, exclude custom weekends and holidays',
+              icon: Icons.business_center_rounded,
+              iconColor: Colors.indigo.shade600,
+              onTap: () => _navigateToScreen(
+                BusinessDaysScreen(historyController: widget.historyController),
+              ),
+            ),
+            const SizedBox(height: 8),
+            _ToolTile(
+              title: 'Milestone Countdown',
+              subtitle: 'Track deadlines, target dates, and countdown progress',
+              icon: Icons.flag_circle_rounded,
+              iconColor: Colors.deepOrange.shade600,
+              onTap: () => _navigateToScreen(
+                MilestoneCountdownScreen(
+                  historyController: widget.historyController,
+                ),
+              ),
+            ),
+            const SizedBox(height: 8),
+            _ToolTile(
+              title: 'Recurrence Planner',
+              subtitle: 'Generate repeating meeting schedules and event occurrences',
+              icon: Icons.event_repeat_rounded,
+              iconColor: Colors.green.shade700,
+              onTap: () => _navigateToScreen(
+                RecurrencePlannerScreen(
+                  historyController: widget.historyController,
+                ),
+              ),
             ),
           ],
         ],
@@ -365,17 +430,22 @@ class _ToolTile extends StatelessWidget {
         side: BorderSide(color: theme.colorScheme.outlineVariant),
       ),
       child: ListTile(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8),
-        ),
-        leading: Icon(
-          icon,
-          color: iconColor ?? theme.colorScheme.primary,
-          size: 24,
+        leading: Container(
+          width: 40,
+          height: 40,
+          decoration: BoxDecoration(
+            color: (iconColor ?? theme.colorScheme.primary).withValues(alpha: 0.12),
+            borderRadius: BorderRadius.circular(8),
+          ),
+          child: Icon(
+            icon,
+            color: iconColor ?? theme.colorScheme.primary,
+            size: 22,
+          ),
         ),
         title: Text(
           title,
-          style: theme.textTheme.titleSmall?.copyWith(
+          style: theme.textTheme.bodyMedium?.copyWith(
             fontWeight: FontWeight.w600,
           ),
         ),
@@ -385,9 +455,10 @@ class _ToolTile extends StatelessWidget {
             color: theme.colorScheme.onSurfaceVariant,
           ),
         ),
-        trailing: const Icon(
+        trailing: Icon(
           Icons.chevron_right,
           size: 20,
+          color: theme.colorScheme.outline,
         ),
         onTap: onTap,
       ),

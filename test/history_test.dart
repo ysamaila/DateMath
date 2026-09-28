@@ -1,6 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:datemath/core/models/history_item.dart';
 import 'package:datemath/core/services/history_service.dart';
 import 'package:datemath/app/controllers/history_controller.dart';
 

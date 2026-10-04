@@ -61,10 +61,10 @@ class _EquinoxSolsticeScreenState extends State<EquinoxSolsticeScreen> {
     final now = DateTime.now();
     final events = AstronomicalService.calculateSolarEvents(_selectedYear);
 
-    final summary = '$_selectedYear Solar Events: ' +
-        events
-            .map((e) => '${e.name}: ${DateFormat('yyyy-MM-dd HH:mm').format(e.localDateTime)}')
-            .join(', ');
+    final eventsList = events
+        .map((e) => '${e.name}: ${DateFormat('yyyy-MM-dd HH:mm').format(e.localDateTime)}')
+        .join(', ');
+    final summary = '$_selectedYear Solar Events: $eventsList';
 
     return Scaffold(
       appBar: AppBar(

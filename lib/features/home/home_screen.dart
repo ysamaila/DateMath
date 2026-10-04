@@ -8,8 +8,11 @@ import '../business_days/business_days_screen.dart';
 import '../date_difference/date_difference_screen.dart';
 import '../day_finder/day_finder_screen.dart';
 import '../duration_converter/duration_converter_screen.dart';
+import '../equinox_solstice/equinox_solstice_screen.dart';
 import '../history_presets/history_presets_screen.dart';
+import '../julian_milestones/julian_milestones_screen.dart';
 import '../milestone_countdown/milestone_countdown_screen.dart';
+import '../moon_phases/moon_phases_screen.dart';
 import '../recurrence_planner/recurrence_planner_screen.dart';
 import '../time_math/time_math_screen.dart';
 import '../twelve_twenty_four/twelve_twenty_four_screen.dart';
@@ -110,7 +113,7 @@ class _DashboardView extends StatefulWidget {
 }
 
 class _DashboardViewState extends State<_DashboardView> {
-  int _categoryIndex = 0; // 0: All, 1: Date Tools, 2: Time & Convert, 3: Work & Planning
+  int _categoryIndex = 0; // 0: All, 1: Date Tools, 2: Time & Convert, 3: Work & Planning, 4: Astronomy
 
   void _navigateToScreen(Widget screen) {
     Navigator.of(context).push(
@@ -126,6 +129,7 @@ class _DashboardViewState extends State<_DashboardView> {
     final showDateTools = _categoryIndex == 0 || _categoryIndex == 1;
     final showTimeTools = _categoryIndex == 0 || _categoryIndex == 2;
     final showWorkTools = _categoryIndex == 0 || _categoryIndex == 3;
+    final showAstronomyTools = _categoryIndex == 0 || _categoryIndex == 4;
 
     return Scaffold(
       appBar: AppBar(
@@ -234,7 +238,7 @@ class _DashboardViewState extends State<_DashboardView> {
             child: Row(
               children: [
                 FilterChip(
-                  label: const Text('All (11)'),
+                  label: const Text('All (14)'),
                   selected: _categoryIndex == 0,
                   onSelected: (_) => setState(() => _categoryIndex = 0),
                 ),
@@ -255,6 +259,12 @@ class _DashboardViewState extends State<_DashboardView> {
                   label: const Text('Work & Planning (3)'),
                   selected: _categoryIndex == 3,
                   onSelected: (_) => setState(() => _categoryIndex = 3),
+                ),
+                const SizedBox(width: 8),
+                FilterChip(
+                  label: const Text('Astronomy (3)'),
+                  selected: _categoryIndex == 4,
+                  onSelected: (_) => setState(() => _categoryIndex = 4),
                 ),
               ],
             ),
@@ -362,6 +372,40 @@ class _DashboardViewState extends State<_DashboardView> {
                 RecurrencePlannerScreen(
                   historyController: widget.historyController,
                 ),
+              ),
+            ),
+            if (showAstronomyTools) const SizedBox(height: 8),
+          ],
+
+          // Astronomy Tools (Release 6)
+          if (showAstronomyTools) ...[
+            _ToolTile(
+              title: 'Moon Phases',
+              subtitle: 'Track lunar illumination, cycle age, and upcoming primary phases',
+              icon: Icons.nightlight_round,
+              iconColor: Colors.amber.shade800,
+              onTap: () => _navigateToScreen(
+                MoonPhasesScreen(historyController: widget.historyController),
+              ),
+            ),
+            const SizedBox(height: 8),
+            _ToolTile(
+              title: 'Equinox & Solstice',
+              subtitle: 'Calculate exact dates and times for seasonal equinoxes and solstices',
+              icon: Icons.wb_sunny_rounded,
+              iconColor: Colors.deepOrange.shade500,
+              onTap: () => _navigateToScreen(
+                EquinoxSolsticeScreen(historyController: widget.historyController),
+              ),
+            ),
+            const SizedBox(height: 8),
+            _ToolTile(
+              title: 'Julian & Milestones',
+              subtitle: 'Astronomical Julian Dates (JD, MJD) and day-of-year milestone targets',
+              icon: Icons.auto_awesome_rounded,
+              iconColor: Colors.indigo.shade400,
+              onTap: () => _navigateToScreen(
+                JulianMilestonesScreen(historyController: widget.historyController),
               ),
             ),
           ],

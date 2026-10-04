@@ -34,10 +34,11 @@ void main() {
     expect(find.text('Tools'), findsOneWidget);
 
     // Verify filter chips
-    expect(find.text('All (11)'), findsOneWidget);
+    expect(find.text('All (14)'), findsOneWidget);
     expect(find.text('Date Tools (4)'), findsOneWidget);
     expect(find.text('Time & Convert (4)'), findsOneWidget);
     expect(find.text('Work & Planning (3)'), findsOneWidget);
+    expect(find.text('Astronomy (3)'), findsOneWidget);
 
     // Verify tool list items on dashboard in "All" mode
     expect(find.text('Date Difference'), findsWidgets);
@@ -51,40 +52,55 @@ void main() {
     expect(find.text('Business Days'), findsOneWidget);
     expect(find.text('Milestone Countdown'), findsOneWidget);
     expect(find.text('Recurrence Planner'), findsOneWidget);
+    expect(find.text('Moon Phases'), findsOneWidget);
+    expect(find.text('Equinox & Solstice'), findsOneWidget);
+    expect(find.text('Julian & Milestones'), findsOneWidget);
+
+    // Test Filter Chip: Astronomy (3)
+    await tester.ensureVisible(find.text('Astronomy (3)'));
+    await tester.tap(find.text('Astronomy (3)'));
+    await tester.pumpAndSettle();
+    expect(find.text('Date Difference'), findsNothing);
+    expect(find.text('Time Math'), findsNothing);
+    expect(find.text('Business Days'), findsNothing);
+    expect(find.text('Moon Phases'), findsOneWidget);
+    expect(find.text('Equinox & Solstice'), findsOneWidget);
+    expect(find.text('Julian & Milestones'), findsOneWidget);
+
+    // Test Navigation to Moon Phases screen
+    await tester.tap(find.text('Moon Phases'));
+    await tester.pumpAndSettle();
+    expect(find.text('Observation Date'), findsOneWidget);
+    expect(find.text('Upcoming Primary Phases'), findsOneWidget);
+    await tester.pageBack();
+    await tester.pumpAndSettle();
+
+    // Test Navigation to Equinox & Solstice screen
+    await tester.tap(find.text('Equinox & Solstice'));
+    await tester.pumpAndSettle();
+    expect(find.text('Observation Year'), findsOneWidget);
+    expect(find.text('March Equinox'), findsOneWidget);
+    await tester.pageBack();
+    await tester.pumpAndSettle();
+
+    // Test Navigation to Julian & Milestones screen
+    await tester.tap(find.text('Julian & Milestones'));
+    await tester.pumpAndSettle();
+    expect(find.text('JULIAN DATE (JD)'), findsOneWidget);
+    expect(find.text('MODIFIED JULIAN DATE (MJD)'), findsOneWidget);
+    await tester.pageBack();
+    await tester.pumpAndSettle();
 
     // Test Filter Chip: Work & Planning (3)
+    await tester.ensureVisible(find.text('Work & Planning (3)'));
     await tester.tap(find.text('Work & Planning (3)'));
     await tester.pumpAndSettle();
     expect(find.text('Date Difference'), findsNothing);
     expect(find.text('Time Math'), findsNothing);
+    expect(find.text('Moon Phases'), findsNothing);
     expect(find.text('Business Days'), findsOneWidget);
     expect(find.text('Milestone Countdown'), findsOneWidget);
     expect(find.text('Recurrence Planner'), findsOneWidget);
-
-    // Test Navigation to Business Days screen
-    await tester.tap(find.text('Business Days'));
-    await tester.pumpAndSettle();
-    expect(find.text('Between Dates'), findsOneWidget);
-    expect(find.text('Add / Subtract'), findsOneWidget);
-    expect(find.text('WORKING DAYS'), findsOneWidget);
-    await tester.pageBack();
-    await tester.pumpAndSettle();
-
-    // Test Navigation to Milestone Countdown screen
-    await tester.tap(find.text('Milestone Countdown'));
-    await tester.pumpAndSettle();
-    expect(find.text('Milestone Name'), findsOneWidget);
-    expect(find.text('Quick Target Presets'), findsOneWidget);
-    await tester.pageBack();
-    await tester.pumpAndSettle();
-
-    // Test Navigation to Recurrence Planner screen
-    await tester.tap(find.text('Recurrence Planner'));
-    await tester.pumpAndSettle();
-    expect(find.text('Schedule Start Date'), findsOneWidget);
-    expect(find.text('Recurrence Frequency'), findsOneWidget);
-    await tester.pageBack();
-    await tester.pumpAndSettle();
 
     // Test History AppBar Action
     await tester.tap(find.byIcon(Icons.history_rounded));

@@ -52,7 +52,7 @@ class _JulianMilestonesScreenState extends State<JulianMilestonesScreen> {
     final milestones = AstronomicalService.getDayOfYearMilestones(_selectedDate.year);
 
     final summary =
-        '${AppUtils.formatFull(_selectedDate)} ${_selectedTime.formatted}: '
+        '${AppUtils.formatFull(_selectedDate)} ${_selectedTime.formatted24()}: '
         'JD: ${result.julianDate.toStringAsFixed(5)}, MJD: ${result.modifiedJulianDate.toStringAsFixed(5)}, '
         'Day ${result.dayOfYear} of ${result.totalDaysInYear} (${result.yearProgressPercentage.toStringAsFixed(1)}%).';
 
